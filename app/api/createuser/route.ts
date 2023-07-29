@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import prisma, { Prisma } from "@/lib/prisma";
 import crypto from "crypto";
 interface reqBody {
   username: string;
@@ -18,11 +18,12 @@ export async function POST(req: Request) {
   const hash = crypto
     .pbkdf2Sync(password, salt, 100000, 64, "sha512")
     .toString("hex");
+  const json = [] as Prisma.JsonArray;
   await prisma.users.create({
     data: {
       username: username,
       password: hash,
-      todos: todos || "",
+      todos: json,
     },
   });
   return new Response(JSON.stringify({ status, hash }));
