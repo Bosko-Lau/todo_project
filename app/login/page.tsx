@@ -1,12 +1,28 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("test success");
+    if (!username || !password) {
+      alert("username and password required!");
+      return;
+    }
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    });
+    const { status, hash }: { status: boolean; hash: string } =
+      await res.json();
+    if (!status) {
+      alert("Username or password incorrect!");
+      return;
+    }
+    router.replace(`/todo?username=${username}&password=${hash}`);
   };
   return (
     <form onSubmit={handleSubmit}>
