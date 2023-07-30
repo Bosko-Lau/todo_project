@@ -14,10 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Navbar loginStatus={false} />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
