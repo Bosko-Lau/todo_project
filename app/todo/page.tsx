@@ -1,12 +1,12 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import cookie from "js-cookie";
 
 const Todo = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const username = searchParams.get("username");
-  const password = searchParams.get("password");
+  const username = cookie.get("username");
+  const password = cookie.get("password");
   const [Loading, setLoading] = useState(true);
 
   useEffect(() => {
