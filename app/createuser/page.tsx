@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import cookie from "js-cookie";
 
 interface ReqBody {
   username: string;
@@ -36,15 +35,12 @@ const CreateUser = () => {
       return;
     }
     alert("user successfully created!");
-    cookie.set("password", hash, {
-      expires: 1,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-    });
-    cookie.set("username", username, {
-      expires: 1,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
+    await fetch("/api/setcookie", {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        hash,
+      }),
     });
 
     router.replace(`/todo`);

@@ -2,13 +2,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import cookie from "js-cookie";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const setCookies = () => {};
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
@@ -25,16 +23,14 @@ const Login = () => {
       alert("Username or password incorrect!");
       return;
     }
-    cookie.set("password", hash, {
-      expires: 1,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
+    await fetch("/api/setcookie", {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        hash,
+      }),
     });
-    cookie.set("username", username, {
-      expires: 1,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-    });
+
     router.replace(`/todo`);
   };
   return (
