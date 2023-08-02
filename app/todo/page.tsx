@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import cookie from "js-cookie";
 
@@ -81,6 +81,16 @@ const Todo = () => {
 
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    cookie.set("username", "", {
+      expires: 1, // Expires in 1 day
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+    });
+    cookie.set("password", "", {
+      expires: 1, // Expires in 1 day
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+    });
     router.push("/");
   };
 
@@ -102,12 +112,6 @@ const Todo = () => {
                       setTodos((prevTodos) => {
                         setKeysUsed((prevKeysUsed) =>
                           prevKeysUsed.filter((_, key) => key !== id)
-                        );
-                        localStorage.setItem(
-                          "App.todos",
-                          JSON.stringify(
-                            prevTodos.filter((_, index) => index !== id)
-                          )
                         );
                         return prevTodos.filter((_, index) => index !== id);
                       })

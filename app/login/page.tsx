@@ -1,10 +1,15 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cookie from "js-cookie";
 
 const Login = () => {
+  useEffect(() => {
+    if (cookie.get("username") && cookie.get("password")) {
+      router.replace("/todo");
+    }
+  }, []);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();

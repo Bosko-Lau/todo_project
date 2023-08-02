@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cookie from "js-cookie";
 interface ReqBody {
   username: string;
@@ -10,6 +10,11 @@ interface ReqBody {
 }
 
 const CreateUser = () => {
+  useEffect(() => {
+    if (cookie.get("username") && cookie.get("password")) {
+      router.replace("/todo");
+    }
+  }, []);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
