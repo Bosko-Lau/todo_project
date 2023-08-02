@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import cookie from "js-cookie";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -23,14 +24,16 @@ const Login = () => {
       alert("Username or password incorrect!");
       return;
     }
-    await fetch("/api/setcookie", {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        hash,
-      }),
+    cookie.set("password", hash, {
+      expires: 1, // Expires in 1 day
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
     });
-
+    cookie.set("username", username, {
+      expires: 1, // Expires in 1 day
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+    });
     router.replace(`/todo`);
   };
   return (
