@@ -144,9 +144,6 @@ const Todo = () => {
               submit
             </button>
           </form>
-          <a href="#" className="btn btn-danger m-3" onClick={handleLogout}>
-            Log out
-          </a>
         </>
       )}
     </>
