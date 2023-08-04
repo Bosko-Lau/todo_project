@@ -21,7 +21,11 @@ const Login = () => {
     }
     const res = await fetch("/api/login", {
       method: "POST",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({
+        username,
+        password,
+        authkey: process.env.NEXT_PUBLIC_AUTHKEY || "",
+      }),
     });
     const { status, hash }: { status: boolean; hash: string } =
       await res.json();

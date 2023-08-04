@@ -18,7 +18,11 @@ const Todo = () => {
       } else {
         const res = await fetch("/api/authuser", {
           method: "POST",
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({
+            username,
+            password,
+            authkey: process.env.NEXT_PUBLIC_AUTHKEY || "",
+          }),
         });
         const { redirect } = await res.json();
         if (redirect) {
@@ -37,6 +41,7 @@ const Todo = () => {
         body: JSON.stringify({
           username,
           password,
+          authkey: process.env.NEXT_PUBLIC_AUTHKEY || "",
         }),
       });
       const { todos } = await res.json();
@@ -56,6 +61,7 @@ const Todo = () => {
           username,
           password,
           todos: JSON.stringify(todos),
+          authkey: process.env.NEXT_PUBLIC_AUTHKEY || "",
         }),
       });
     })();

@@ -3,10 +3,21 @@ import prisma from "@/lib/prisma";
 interface reqBody {
   username: string;
   password: string;
+  authkey: string;
 }
 
 export async function POST(req: Request) {
-  const { username, password }: reqBody = await req.json();
+  const { username, password, authkey }: reqBody = await req.json();
+  if (!authkey) {
+    return new Response(
+      JSON.stringify({
+        auth: false,
+      }),
+      {
+        status: 401,
+      }
+    );
+  }
   if (!username || !password) {
     return new Response(JSON.stringify({ redirect: true }));
   }

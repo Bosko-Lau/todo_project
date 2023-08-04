@@ -8,7 +8,17 @@ interface reqBody {
 }
 
 export async function POST(req: Request) {
-  const { username, password, todos }: reqBody = await req.json();
+  const { username, password, authkey }: reqBody = await req.json();
+  if (!authkey) {
+    return new Response(
+      JSON.stringify({
+        auth: false,
+      }),
+      {
+        status: 401,
+      }
+    );
+  }
   const salt = process.env.SALT || "testSalt";
   const userExists = await prisma.users.findUnique({ where: { username } });
   const status = !userExists;

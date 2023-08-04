@@ -4,10 +4,21 @@ interface reqBody {
   username: string;
   password: string;
   todos: string;
+  authkey: string;
 }
 
 export async function PUT(req: Request) {
-  const { username, password, todos }: reqBody = await req.json();
+  const { username, password, todos, authkey }: reqBody = await req.json();
+  if (!authkey) {
+    return new Response(
+      JSON.stringify({
+        auth: false,
+      }),
+      {
+        status: 401,
+      }
+    );
+  }
   const _todos = JSON.parse(todos) as Prisma.JsonArray;
   if (!username || !password) {
     return new Response(JSON.stringify({ redirect: true }));

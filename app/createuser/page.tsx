@@ -7,6 +7,7 @@ interface ReqBody {
   username: string;
   password: string;
   todos: string;
+  authkey: string;
 }
 
 const CreateUser = () => {
@@ -22,6 +23,7 @@ const CreateUser = () => {
     username,
     password,
     todos: "",
+    authkey: process.env.NEXT_PUBLIC_AUTHKEY || "",
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ const CreateUser = () => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    router.replace(`/todo?username=${username}&password=${hash}`);
+    router.replace(`/todo`);
   };
 
   return (
