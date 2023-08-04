@@ -10,6 +10,7 @@ const Todo = () => {
   const [Loading, setLoading] = useState(true);
 
   useEffect(() => {
+    router.refresh();
     setLoading(true);
     (async () => {
       if (!username || !password) {

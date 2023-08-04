@@ -52,6 +52,7 @@ const Login = () => {
           className="form-control m-2"
           name="username"
           value={username}
+          autoComplete="username"
           onChange={(e) => setUsername(e.target.value)}
         />
         <label htmlFor="password" className="m-2">
@@ -62,6 +63,7 @@ const Login = () => {
           className="form-control m-2"
           name="password"
           value={password}
+          autoComplete="current-password"
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>

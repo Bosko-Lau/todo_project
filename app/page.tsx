@@ -9,6 +9,7 @@ import cookie from "js-cookie";
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
+    router.refresh();
     if (cookie.get("username") && cookie.get("password")) {
       router.replace("/todo");
     }
