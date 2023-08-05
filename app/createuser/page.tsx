@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import cookie from "js-cookie";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 interface ReqBody {
   username: string;
   password: string;
@@ -11,6 +13,7 @@ interface ReqBody {
 }
 
 const CreateUser = () => {
+  const swal = withReactContent(Swal);
   useEffect(() => {
     if (cookie.get("username") && cookie.get("password")) {
       router.replace("/todo");
@@ -28,7 +31,7 @@ const CreateUser = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
-      alert("Username or password not provided");
+      swal.fire({ text: "Username or password not provided" });
       return;
     }
 
@@ -38,10 +41,10 @@ const CreateUser = () => {
     });
     const { status, hash } = await res.json();
     if (!status) {
-      alert("User with the same name already exists");
+      swal.fire({ text: "User with the same name already exists" });
       return;
     }
-    alert("user successfully created!");
+    swal.fire({ text: "user successfully created!" });
     cookie.set("password", hash, {
       expires: 1, // Expires in 1 day
       path: "/",

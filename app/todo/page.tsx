@@ -2,12 +2,15 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import cookie from "js-cookie";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Todo = () => {
   const router = useRouter();
   const username = cookie.get("username");
   const password = cookie.get("password");
   const [Loading, setLoading] = useState(true);
+  const swal = withReactContent(Swal);
 
   useEffect(() => {
     router.refresh();
@@ -70,35 +73,19 @@ const Todo = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (todo === "") {
-      alert("Please enter a todo");
+      swal.fire({ text: "Please enter a todo" });
       return;
     }
     if (keysUsed.includes(todo)) {
-      alert("You already entered this todo");
+      swal.fire({ text: "You already entered this todo" });
       return;
     }
     setTodos((prevTodos) => {
       setKeysUsed((prevKeysUsed) => [...prevKeysUsed, todo]);
       const updatedTodos = [...prevTodos, todo];
-      localStorage.setItem("App.todos", JSON.stringify(updatedTodos));
       return updatedTodos;
     });
     setTodo("");
-  };
-
-  const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    cookie.set("username", "", {
-      expires: 1, // Expires in 1 day
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-    });
-    cookie.set("password", "", {
-      expires: 1, // Expires in 1 day
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-    });
-    router.push("/");
   };
 
   return (

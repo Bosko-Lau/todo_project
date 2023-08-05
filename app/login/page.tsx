@@ -3,8 +3,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import cookie from "js-cookie";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Login = () => {
+  const swal = withReactContent(Swal);
   useEffect(() => {
     if (cookie.get("username") && cookie.get("password")) {
       router.replace("/todo");
@@ -16,7 +19,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
-      alert("username and password required!");
+      swal.fire({ text: "username and password required!" });
       return;
     }
     const res = await fetch("/api/login", {
@@ -30,7 +33,7 @@ const Login = () => {
     const { status, hash }: { status: boolean; hash: string } =
       await res.json();
     if (!status) {
-      alert("Username or password incorrect!");
+      swal.fire({ text: "Username or password incorrect!" });
       return;
     }
     cookie.set("password", hash, {

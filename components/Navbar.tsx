@@ -3,11 +3,14 @@ import Link from "next/link";
 import cookie from "js-cookie";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 interface NavbarProps {
   loginStatus: boolean;
 }
 
 const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
+  const swal = withReactContent(Swal);
   const router = useRouter();
   return (
     <nav className="navbar navbar-light bg-light">
@@ -18,11 +21,21 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
         Create User
       </Link>
       <button
-        onClick={() => {
+        onClick={async () => {
           if (cookie.get("username") || cookie.get("password")) {
-            cookie.remove("username");
-            cookie.remove("password");
-            router.push("/");
+            const result = await swal.fire({
+              title: "Are you sure you want to logout?",
+              icon: "question",
+              showCancelButton: true,
+              confirmButtonText: "Logout",
+              cancelButtonText: "Cancel",
+            });
+
+            if (result.isConfirmed) {
+              cookie.remove("username");
+              cookie.remove("password");
+              router.push("/");
+            }
           } else {
             router.push("/login");
           }
