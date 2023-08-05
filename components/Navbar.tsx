@@ -9,7 +9,7 @@ interface NavbarProps {
   loginStatus: boolean;
 }
 
-const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
+const Navbar: FC<NavbarProps> = ({ loginStatus }: NavbarProps) => {
   const swal = withReactContent(Swal);
   const router = useRouter();
   return (
@@ -42,7 +42,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
         }}
         className="nav-item nav-link m-2"
       >
-        {props.loginStatus ? "logout" : "login"}
+        {loginStatus ? "logout" : "login"}
       </button>
     </nav>
   );

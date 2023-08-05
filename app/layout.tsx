@@ -3,6 +3,7 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Create Next App",
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body>
         <Navbar loginStatus={loginStatus} />
         {children}
+        <Footer />
       </body>
     </html>
   );
