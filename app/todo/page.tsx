@@ -101,15 +101,26 @@ const Todo = () => {
                   {todo}{" "}
                   <button
                     className="btn btn-danger m-2"
-                    onClick={() =>
-                      // setTodos(todos.filter((_, index) => index !== id))
-                      setTodos((prevTodos) => {
-                        setKeysUsed((prevKeysUsed) =>
-                          prevKeysUsed.filter((_, key) => key !== id)
-                        );
-                        return prevTodos.filter((_, index) => index !== id);
-                      })
-                    }
+                    onClick={async () => {
+                      const confirmed = await Swal.fire({
+                        title: "Confirmation",
+                        text: "Are you sure you want to remove this item?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, remove it!",
+                        cancelButtonText: "No, cancel",
+                        reverseButtons: true,
+                      });
+
+                      if (confirmed.isConfirmed) {
+                        setTodos((prevTodos) => {
+                          setKeysUsed((prevKeysUsed) =>
+                            prevKeysUsed.filter((_, key) => key !== id)
+                          );
+                          return prevTodos.filter((_, index) => index !== id);
+                        });
+                      }
+                    }}
                   >
                     remove todo
                   </button>
